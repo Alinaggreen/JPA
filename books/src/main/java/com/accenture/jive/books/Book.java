@@ -1,9 +1,6 @@
 package com.accenture.jive.books;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Book {
@@ -14,6 +11,10 @@ public class Book {
 
     private String guid;
     private String title;
+
+    @ManyToOne
+    @JoinColumn(name="author", nullable = false)
+    private Author author;
 
     public Long getId() {
         return id;
@@ -37,5 +38,13 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 }
