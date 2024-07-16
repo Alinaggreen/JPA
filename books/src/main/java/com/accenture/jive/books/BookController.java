@@ -51,7 +51,6 @@ public class BookController {
 //        return ResponseEntity.noContent().build();
 //    }
 
-    //TODO: Error Case
     @Transactional
     @DeleteMapping ("/books/{bookGuid}")
     public ResponseEntity<?> removeOneBook(@PathVariable("bookGuid") String guid) {
@@ -70,12 +69,14 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.CREATED).body(book);
     }
 
-    //TODO: NOT WORKING
-    //TODO: Error Case
     @PutMapping ("/books/{bookGuid}")
     public ResponseEntity<?> updateOneBook(@PathVariable("bookGuid") String guid, @RequestBody Book book) {
-        if (!bookRepository.existsByGuid(guid)) {
-            return ResponseEntity.notFound().build();
+        Optional<Book> oldBook = bookRepository.findByGuid(guid);
+        if (oldBook.isPresent()) {
+            book.setId(oldBook.get().getId());
+            book.setGuid(guid);
+            bookRepository.save(book);
+            return ResponseEntity.noContent().build();
         }
         bookRepository.save(book);
         return ResponseEntity.noContent().build();
