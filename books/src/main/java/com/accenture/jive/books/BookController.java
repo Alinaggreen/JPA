@@ -1,9 +1,9 @@
 package com.accenture.jive.books;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,32 +37,42 @@ public class BookController {
         return ResponseEntity.notFound().build();
     }
 
-    //TODO: DELETE ALL
+    //TODO: Error Case
     @DeleteMapping ("/books")
     public ResponseEntity<?> removeBooks() {
         bookRepository.deleteAll();
         return ResponseEntity.noContent().build();
     }
 
-    //TODO: DELETE ONE
+//    @DeleteMapping ("/books/{bookId}")
+//    public ResponseEntity<?> removeOneBook(@PathVariable("bookId") Long id) {
+//        bookRepository.deleteById(id);
+//        return ResponseEntity.noContent().build();
+//    }
+
+    //TODO: NOT WORKING
+    //TODO: Error Case
     @DeleteMapping ("/books/{bookGuid}")
     public ResponseEntity<?> removeOneBook(@PathVariable("bookGuid") String guid) {
         bookRepository.deleteByGuid(guid);
         return ResponseEntity.noContent().build();
     }
 
-    //TODO: POST
-    //Fehlermeldung von uns mit ResponseEntity oder macht das Spring selber?
+    //TODO: Error Case
     @PostMapping ("/books")
     public ResponseEntity<Book> createOneBook(@RequestBody Book book) {
         book.setGuid(UUID.randomUUID().toString());
         bookRepository.save(book);
-        return ResponseEntity.internalServerError().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(book);
     }
 
-    //TODO: PUT
+    //TODO: NOT WORKING
+    //TODO: Error Case
+    @PutMapping ("/books/{bookGuid}")
     public ResponseEntity<?> updateOneBook(@PathVariable("bookGuid") String guid, @RequestBody Book book) {
-        book.setGuid(guid);
+        if (!bookRepository.existsByGuid(guid)) {
+            return ResponseEntity.notFound().build();
+        }
         bookRepository.save(book);
         return ResponseEntity.noContent().build();
     }

@@ -11,6 +11,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     void deleteByGuid(String guid);
 
+    boolean existsByGuid(String guid);
+
     @Query(nativeQuery = true, value = "SELECT * FROM book WHERE id < 55")
     List<Book> findByIdCondition();
 }
