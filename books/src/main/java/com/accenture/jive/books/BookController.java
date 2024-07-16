@@ -38,11 +38,14 @@ public class BookController {
         return ResponseEntity.notFound().build();
     }
 
-    //TODO: Error Case
     @DeleteMapping ("/books")
     public ResponseEntity<?> removeBooks() {
-        bookRepository.deleteAll();
-        return ResponseEntity.noContent().build();
+        try {
+            bookRepository.deleteAll();
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 //    @DeleteMapping ("/books/{bookId}")
@@ -61,12 +64,14 @@ public class BookController {
         return ResponseEntity.noContent().build();
     }
 
-    //TODO: Error Case
     @PostMapping ("/books")
     public ResponseEntity<Book> createOneBook(@RequestBody Book book) {
         book.setGuid(UUID.randomUUID().toString());
-        bookRepository.save(book);
-        return ResponseEntity.status(HttpStatus.CREATED).body(book);
+        Book createdBook = bookRepository.save(book);
+        if (createdBook.getId() == null) {
+            return ResponseEntity.internalServerError().build();
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
     }
 
     @PutMapping ("/books/{bookGuid}")
@@ -78,8 +83,7 @@ public class BookController {
             bookRepository.save(book);
             return ResponseEntity.noContent().build();
         }
-        bookRepository.save(book);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 
 }
