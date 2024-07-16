@@ -1,5 +1,6 @@
 package com.accenture.jive.books;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,10 +51,13 @@ public class BookController {
 //        return ResponseEntity.noContent().build();
 //    }
 
-    //TODO: NOT WORKING
     //TODO: Error Case
+    @Transactional
     @DeleteMapping ("/books/{bookGuid}")
     public ResponseEntity<?> removeOneBook(@PathVariable("bookGuid") String guid) {
+        if (!bookRepository.existsByGuid(guid)) {
+            return ResponseEntity.notFound().build();
+        }
         bookRepository.deleteByGuid(guid);
         return ResponseEntity.noContent().build();
     }

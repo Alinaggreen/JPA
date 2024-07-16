@@ -1,5 +1,6 @@
 package com.accenture.jive.books;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
@@ -9,6 +10,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     Optional<Book> findByGuid(String guid);
 
+    @Transactional
     void deleteByGuid(String guid);
 
     boolean existsByGuid(String guid);
