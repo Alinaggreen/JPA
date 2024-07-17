@@ -1,6 +1,7 @@
 package com.accenture.jive.books.controller.mapper;
 
 import com.accenture.jive.books.controller.dto.BookDto;
+import com.accenture.jive.books.controller.dto.BookDtoPost;
 import com.accenture.jive.books.persistence.entity.Author;
 import com.accenture.jive.books.persistence.entity.Book;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-07-17T17:20:22+0200",
+    date = "2024-07-17T17:37:41+0200",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 22.0.1 (Oracle Corporation)"
 )
 @Component
@@ -44,6 +45,19 @@ public class BookMapperImpl implements BookMapper {
         }
 
         return list;
+    }
+
+    @Override
+    public Book dtoToBook(BookDtoPost bookDtoPost) {
+        if ( bookDtoPost == null ) {
+            return null;
+        }
+
+        Book book = new Book();
+
+        book.setTitle( bookDtoPost.getTitle() );
+
+        return book;
     }
 
     private String bookAuthorFirstName(Book book) {

@@ -30,5 +30,4 @@ public class AuthorController {
         return ResponseEntity.ok(authorDtos);
     }
 
-
 }

@@ -1,8 +1,11 @@
 package com.accenture.jive.books.controller;
 
+import com.accenture.jive.books.controller.dto.BookDtoPost;
+import com.accenture.jive.books.persistence.entity.Author;
 import com.accenture.jive.books.persistence.entity.Book;
 import com.accenture.jive.books.controller.dto.BookDto;
 import com.accenture.jive.books.controller.mapper.BookMapper;
+import com.accenture.jive.books.persistence.repository.AuthorRepository;
 import com.accenture.jive.books.persistence.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,9 @@ public class BookController {
     private BookRepository bookRepository;
 
     @Autowired
+    private AuthorRepository authorRepository;
+
+    @Autowired
     private BookMapper bookMapper;
 
     @GetMapping("/books")
@@ -31,11 +37,6 @@ public class BookController {
         }
         return ResponseEntity.ok(booksDto);
     }
-
-//    @GetMapping("/books/condition")
-//    public List<Book> readAllBooksCondition() {
-//        return bookRepository.findByIdCondition();
-//    }
 
     @GetMapping("/books/{bookGuid}")
     public ResponseEntity<BookDto> readOneBook(@PathVariable("bookGuid") String guid) {
@@ -57,12 +58,6 @@ public class BookController {
         }
     }
 
-//    @DeleteMapping ("/books/{bookId}")
-//    public ResponseEntity<?> removeOneBook(@PathVariable("bookId") Long id) {
-//        bookRepository.deleteById(id);
-//        return ResponseEntity.noContent().build();
-//    }
-
     @Transactional
     @DeleteMapping ("/books/{bookGuid}")
     public ResponseEntity<?> removeOneBook(@PathVariable("bookGuid") String guid) {
@@ -72,10 +67,37 @@ public class BookController {
         bookRepository.deleteByGuid(guid);
         return ResponseEntity.noContent().build();
     }
+//
+//    @PostMapping ("/books")
+//    public ResponseEntity<Book> createOneBook(@RequestBody Book book) {
+//        book.setGuid(UUID.randomUUID().toString());
+//        Book createdBook = bookRepository.save(book);
+//        if (createdBook.getId() == null) {
+//            return ResponseEntity.internalServerError().build();
+//        }
+//        return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
+//    }
 
     @PostMapping ("/books")
-    public ResponseEntity<Book> createOneBook(@RequestBody Book book) {
+    public ResponseEntity<Book> createOneBook(@RequestBody BookDtoPost bookDtoPost) {
+        Book book = bookMapper.dtoToBook(bookDtoPost);
         book.setGuid(UUID.randomUUID().toString());
+
+        Optional<Author> optionalAuthor =
+                authorRepository.findByName(bookDtoPost.getAuthorFirstName(), bookDtoPost.getAuthorLastName());
+
+        Author author;
+
+        if (optionalAuthor.isEmpty()) {
+            author = new Author();
+            author.setFirstName(bookDtoPost.getAuthorFirstName());
+            author.setLastName(bookDtoPost.getAuthorLastName());
+            authorRepository.save(author);
+        } else {
+            author = optionalAuthor.get();
+        }
+
+        book.setAuthor(author);
         Book createdBook = bookRepository.save(book);
         if (createdBook.getId() == null) {
             return ResponseEntity.internalServerError().build();
