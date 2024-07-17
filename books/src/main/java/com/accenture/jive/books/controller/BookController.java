@@ -67,19 +67,9 @@ public class BookController {
         bookRepository.deleteByGuid(guid);
         return ResponseEntity.noContent().build();
     }
-//
-//    @PostMapping ("/books")
-//    public ResponseEntity<Book> createOneBook(@RequestBody Book book) {
-//        book.setGuid(UUID.randomUUID().toString());
-//        Book createdBook = bookRepository.save(book);
-//        if (createdBook.getId() == null) {
-//            return ResponseEntity.internalServerError().build();
-//        }
-//        return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
-//    }
 
     @PostMapping ("/books")
-    public ResponseEntity<Book> createOneBook(@RequestBody BookDtoPost bookDtoPost) {
+    public ResponseEntity<BookDto> createOneBook(@RequestBody BookDtoPost bookDtoPost) {
         Book book = bookMapper.dtoToBook(bookDtoPost);
         book.setGuid(UUID.randomUUID().toString());
 
@@ -102,7 +92,8 @@ public class BookController {
         if (createdBook.getId() == null) {
             return ResponseEntity.internalServerError().build();
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
+        BookDto bookDto = bookMapper.bookToDto(createdBook);
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookDto);
     }
 
     @PutMapping ("/books/{bookGuid}")
