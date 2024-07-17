@@ -13,15 +13,19 @@ import java.util.UUID;
 public class BookController {
 
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
+
+    @Autowired
+    private BookMapper bookMapper;
 
     @GetMapping("/books")
-    public ResponseEntity<List<Book>> readAllBooks() {
+    public ResponseEntity<?> readAllBooks() {
         List<Book> books = bookRepository.findAll();
-        if (books.isEmpty()) {
+        List<BookDto> booksDto = bookMapper.booksToDtos(books);
+        if (booksDto.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(books);
+        return ResponseEntity.ok(booksDto);
     }
 
 //    @GetMapping("/books/condition")
