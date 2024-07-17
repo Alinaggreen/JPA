@@ -1,5 +1,7 @@
 package com.accenture.jive.books.controller;
 
+import com.accenture.jive.books.controller.dto.AuthorDto;
+import com.accenture.jive.books.controller.mapper.AuthorMapper;
 import com.accenture.jive.books.persistence.entity.Author;
 import com.accenture.jive.books.persistence.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +17,17 @@ public class AuthorController {
     @Autowired
     private AuthorRepository authorRepository;
 
+    @Autowired
+    private AuthorMapper authorMapper;
+
     @GetMapping("/authors")
     public ResponseEntity<?> readAllAuthors() {
         List<Author> authors = authorRepository.findAll();
-        if (authors.isEmpty()) {
+        List<AuthorDto> authorDtos = authorMapper.authorsToDtos(authors);
+        if (authorDtos.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(authors);
+        return ResponseEntity.ok(authorDtos);
     }
 
 
