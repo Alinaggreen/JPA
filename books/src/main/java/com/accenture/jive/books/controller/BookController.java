@@ -1,6 +1,6 @@
 package com.accenture.jive.books.controller;
 
-import com.accenture.jive.books.controller.dto.BookDtoPost;
+import com.accenture.jive.books.controller.dto.BookDtoRequestBody;
 import com.accenture.jive.books.persistence.entity.Author;
 import com.accenture.jive.books.persistence.entity.Book;
 import com.accenture.jive.books.controller.dto.BookDto;
@@ -69,19 +69,18 @@ public class BookController {
     }
 
     @PostMapping ("/books")
-    public ResponseEntity<BookDto> createOneBook(@RequestBody BookDtoPost bookDtoPost) {
-        Book book = bookMapper.dtoToBook(bookDtoPost);
+    public ResponseEntity<BookDto> createOneBook(@RequestBody BookDtoRequestBody bookDtoRequestBody) {
+        Book book = bookMapper.dtoToBook(bookDtoRequestBody);
         book.setGuid(UUID.randomUUID().toString());
 
         Optional<Author> optionalAuthor =
-                authorRepository.findByName(bookDtoPost.getAuthorFirstName(), bookDtoPost.getAuthorLastName());
-
+                authorRepository.findByName(bookDtoRequestBody.getAuthorFirstName(), bookDtoRequestBody.getAuthorLastName());
         Author author;
 
         if (optionalAuthor.isEmpty()) {
             author = new Author();
-            author.setFirstName(bookDtoPost.getAuthorFirstName());
-            author.setLastName(bookDtoPost.getAuthorLastName());
+            author.setFirstName(bookDtoRequestBody.getAuthorFirstName());
+            author.setLastName(bookDtoRequestBody.getAuthorLastName());
             authorRepository.save(author);
         } else {
             author = optionalAuthor.get();
@@ -97,15 +96,33 @@ public class BookController {
     }
 
     @PutMapping ("/books/{bookGuid}")
-    public ResponseEntity<?> updateOneBook(@PathVariable("bookGuid") String guid, @RequestBody Book book) {
+    public ResponseEntity<?> updateOneBook(@PathVariable("bookGuid") String guid, @RequestBody BookDtoRequestBody bookDtoRequestBody) {
         Optional<Book> oldBook = bookRepository.findByGuid(guid);
-        if (oldBook.isPresent()) {
-            book.setId(oldBook.get().getId());
-            book.setGuid(guid);
-            bookRepository.save(book);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
 
+        if (oldBook.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Book book = bookMapper.dtoToBook(bookDtoRequestBody);
+        book.setId(oldBook.get().getId());
+        book.setGuid(guid);
+
+        Optional<Author> optionalAuthor =
+                authorRepository.findByName(bookDtoRequestBody.getAuthorFirstName(), bookDtoRequestBody.getAuthorLastName());
+        Author author;
+
+        if (optionalAuthor.isEmpty()) {
+            author = new Author();
+            author.setFirstName(bookDtoRequestBody.getAuthorFirstName());
+            author.setLastName(bookDtoRequestBody.getAuthorLastName());
+            authorRepository.save(author);
+        } else {
+            author = optionalAuthor.get();
+        }
+
+        book.setAuthor(author);
+        Book updatedBook = bookRepository.save(book);
+        BookDto bookDto = bookMapper.bookToDto(updatedBook);
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookDto);
+    }
 }

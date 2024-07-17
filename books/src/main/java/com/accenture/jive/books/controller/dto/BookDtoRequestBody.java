@@ -1,6 +1,6 @@
 package com.accenture.jive.books.controller.dto;
 
-public class BookDtoPost {
+public class BookDtoRequestBody {
 
     private String title;
     private String authorFirstName;

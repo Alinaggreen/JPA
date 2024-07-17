@@ -1,6 +1,6 @@
 package com.accenture.jive.books.controller.mapper;
 
-import com.accenture.jive.books.controller.dto.BookDtoPost;
+import com.accenture.jive.books.controller.dto.BookDtoRequestBody;
 import com.accenture.jive.books.persistence.entity.Book;
 import com.accenture.jive.books.controller.dto.BookDto;
 import org.mapstruct.Mapper;
@@ -16,6 +16,6 @@ public interface BookMapper {
 
     List<BookDto> booksToDtos(List<Book> books);
 
-    Book dtoToBook(BookDtoPost bookDtoPost);
+    Book dtoToBook(BookDtoRequestBody bookDtoRequestBody);
 
 }
