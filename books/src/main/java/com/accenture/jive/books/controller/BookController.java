@@ -23,7 +23,7 @@ public class BookController {
     private BookMapper bookMapper;
 
     @GetMapping("/books")
-    public ResponseEntity<?> readAllBooks() {
+    public ResponseEntity<List<BookDto>> readAllBooks() {
         List<Book> books = bookRepository.findAll();
         List<BookDto> booksDto = bookMapper.booksToDtos(books);
         if (booksDto.isEmpty()) {
@@ -38,10 +38,11 @@ public class BookController {
 //    }
 
     @GetMapping("/books/{bookGuid}")
-    public ResponseEntity<Optional<Book>> readOneBook(@PathVariable("bookGuid") String guid) {
+    public ResponseEntity<BookDto> readOneBook(@PathVariable("bookGuid") String guid) {
         Optional<Book> book = bookRepository.findByGuid(guid);
         if (book.isPresent()) {
-            return  ResponseEntity.ok(book);
+            BookDto bookDto = bookMapper.bookToDto(book.get());
+            return ResponseEntity.ok(bookDto);
         }
         return ResponseEntity.notFound().build();
     }
