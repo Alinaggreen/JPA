@@ -1,4 +1,4 @@
-package com.accenture.jive.books;
+package com.accenture.jive.books.controller.dto;
 
 public class BookDto {
 

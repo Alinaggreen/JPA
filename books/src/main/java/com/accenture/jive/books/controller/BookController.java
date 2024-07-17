@@ -1,5 +1,9 @@
-package com.accenture.jive.books;
+package com.accenture.jive.books.controller;
 
+import com.accenture.jive.books.persistence.entity.Book;
+import com.accenture.jive.books.controller.dto.BookDto;
+import com.accenture.jive.books.controller.mapper.BookMapper;
+import com.accenture.jive.books.persistence.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

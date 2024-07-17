@@ -1,5 +1,6 @@
-package com.accenture.jive.books;
+package com.accenture.jive.books.persistence.repository;
 
+import com.accenture.jive.books.persistence.entity.Book;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

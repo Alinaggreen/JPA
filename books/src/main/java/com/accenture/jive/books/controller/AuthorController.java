@@ -1,0 +1,28 @@
+package com.accenture.jive.books.controller;
+
+import com.accenture.jive.books.persistence.entity.Author;
+import com.accenture.jive.books.persistence.repository.AuthorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+public class AuthorController {
+
+    @Autowired
+    private AuthorRepository authorRepository;
+
+    @GetMapping("/authors")
+    public ResponseEntity<?> readAllAuthors() {
+        List<Author> authors = authorRepository.findAll();
+        if (authors.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(authors);
+    }
+
+
+}

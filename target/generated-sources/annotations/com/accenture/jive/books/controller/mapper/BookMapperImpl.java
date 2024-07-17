@@ -1,5 +1,8 @@
-package com.accenture.jive.books;
+package com.accenture.jive.books.controller.mapper;
 
+import com.accenture.jive.books.controller.dto.BookDto;
+import com.accenture.jive.books.persistence.entity.Author;
+import com.accenture.jive.books.persistence.entity.Book;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
@@ -7,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-07-17T14:04:59+0200",
+    date = "2024-07-17T14:24:41+0200",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 22.0.1 (Oracle Corporation)"
 )
 @Component

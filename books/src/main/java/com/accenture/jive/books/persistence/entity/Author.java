@@ -1,4 +1,4 @@
-package com.accenture.jive.books;
+package com.accenture.jive.books.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
