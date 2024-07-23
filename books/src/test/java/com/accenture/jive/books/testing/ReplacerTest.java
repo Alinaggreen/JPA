@@ -1,12 +1,14 @@
 package com.accenture.jive.books.testing;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class ReplacerTest {
 
+    @DisplayName("😱")
     @ParameterizedTest
     @ValueSource(strings = { "racecar", "radar", "able was I ere I saw elba" })
     void palindromes(String candidate) {
