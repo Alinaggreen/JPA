@@ -11,6 +11,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     Optional<Book> findByGuid(String guid);
 
+    Optional<Book> findByTitle(String title);
+
     @Transactional
     void deleteByGuid(String guid);
 
@@ -18,4 +20,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM book WHERE id < 55")
     List<Book> findByIdCondition();
+
 }
