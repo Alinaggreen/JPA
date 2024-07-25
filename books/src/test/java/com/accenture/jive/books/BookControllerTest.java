@@ -30,7 +30,7 @@ public class BookControllerTest {
 
     @Test
     public void readAllBooks() {
-        ResponseEntity<List<BookDto>> response = bookController.readAllBooks();
+        ResponseEntity<List<BookDto>> response = bookController.readAllBooks("ASC");
         List<BookDto> responseBody = response.getBody();
 
         if (responseBody != null) {
@@ -43,7 +43,7 @@ public class BookControllerTest {
         BookDto createdBookBody = createdBook.getBody();
         Assertions.assertNotNull(createdBookBody);
 
-        response = bookController.readAllBooks();
+        response = bookController.readAllBooks("ASC");
         responseBody = response.getBody();
 
         Assertions.assertNotNull(responseBody);

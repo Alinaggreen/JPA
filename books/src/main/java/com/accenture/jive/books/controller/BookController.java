@@ -9,6 +9,7 @@ import com.accenture.jive.books.persistence.repository.AuthorRepository;
 import com.accenture.jive.books.persistence.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +30,16 @@ public class BookController {
     private BookMapper bookMapper;
 
     @GetMapping("/books")
-    public ResponseEntity<List<BookDto>> readAllBooks() {
-        List<Book> books = bookRepository.findAll();
+    public ResponseEntity<List<BookDto>> readAllBooks(
+            @RequestParam(name = "order", required = false, defaultValue = "ASC") String order) {
+
+        Sort.Direction direction = Sort.Direction.valueOf(order);
+
+        if ("DESC".equalsIgnoreCase(order)) {
+            direction = Sort.Direction.DESC;
+        }
+
+        List<Book> books = bookRepository.findAll(Sort.by(direction, "title"));
         List<BookDto> booksDto = bookMapper.booksToDtos(books);
         if (booksDto.isEmpty()) {
             return ResponseEntity.notFound().build();
