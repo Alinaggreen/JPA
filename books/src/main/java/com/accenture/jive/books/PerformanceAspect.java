@@ -1,10 +1,12 @@
 package com.accenture.jive.books;
 
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import com.accenture.jive.books.controller.dto.BookDto;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Aspect
 @Component
@@ -22,6 +24,16 @@ public class PerformanceAspect {
     @After("pointcutReadAllBooks()")
     public void doAfter() {
         System.out.println("AFTER");
+    }
+
+    @Around("pointcutReadAllBooks()")
+    public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
+        long start = System.nanoTime();
+        Object result = pjp.proceed();
+        long end = System.nanoTime();
+        long duration = end-start;
+        System.out.println("Duration: " + duration*Math.pow(10, -9) + "s");
+        return result;
     }
 
 }
