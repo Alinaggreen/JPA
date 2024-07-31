@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = GenreMapper.class)
 public interface BookMapper {
 
     @Mapping(source = "book.author.firstName", target = "authorFirstName")

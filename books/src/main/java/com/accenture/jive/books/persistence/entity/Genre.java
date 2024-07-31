@@ -1,8 +1,6 @@
 package com.accenture.jive.books.persistence.entity;
 
 import jakarta.persistence.*;
-import org.mapstruct.Mapping;
-
 import java.util.Set;
 
 @Entity

@@ -1,7 +1,6 @@
 package com.accenture.jive.books.persistence.entity;
 
 import jakarta.persistence.*;
-
 import java.util.Set;
 
 @Entity

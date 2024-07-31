@@ -40,8 +40,8 @@ public class BookControllerTest {
     public void test(@Autowired MockMvc mvc) throws Exception {
         String contentAsString = mvc.perform(
             post("/books")
-                    .content("{\"title\":\"Harry Potter\"}")
-                    .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"title\":\"Test\"}")
+            .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isCreated())
             .andReturn().getResponse().getContentAsString();
