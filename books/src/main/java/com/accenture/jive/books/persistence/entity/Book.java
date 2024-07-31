@@ -2,6 +2,8 @@ package com.accenture.jive.books.persistence.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 public class Book {
 
@@ -15,6 +17,15 @@ public class Book {
     @ManyToOne
     @JoinColumn(name="author", nullable = false)
     private Author author;
+
+    @ManyToMany
+    @JoinTable(
+            name = "book_genre",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private Set<Genre> genres;
+
 
     public Long getId() {
         return id;
