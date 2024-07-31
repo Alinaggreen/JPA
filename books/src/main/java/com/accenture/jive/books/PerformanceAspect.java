@@ -1,12 +1,7 @@
 package com.accenture.jive.books;
-
-import com.accenture.jive.books.controller.dto.BookDto;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Aspect
 @Component

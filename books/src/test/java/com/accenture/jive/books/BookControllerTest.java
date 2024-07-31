@@ -9,12 +9,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
+@AutoConfigureMockMvc
 public class BookControllerTest {
 
     @Autowired
@@ -23,10 +31,22 @@ public class BookControllerTest {
     @Autowired
     BookController bookController;
 
-    @BeforeEach
-    public void cleanBooks() {
-        bookRepository.deleteAll();
+//    @BeforeEach
+//    public void cleanBooks() {
+//        bookRepository.deleteAll();
+//    }
+
+    @Test
+    public void test(@Autowired MockMvc mvc) throws Exception {
+        mvc.perform(
+            post("/books")
+            .content("{\"title\":\"Harry Potter\"}")
+            .contentType(MediaType.APPLICATION_JSON)
+        )
+        .andExpect(status().isCreated());
     }
+
+
 
     @Test
     public void readAllBooks() {
