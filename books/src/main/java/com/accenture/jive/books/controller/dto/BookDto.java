@@ -1,11 +1,17 @@
 package com.accenture.jive.books.controller.dto;
 
+import com.accenture.jive.books.persistence.entity.Genre;
+
+import java.util.List;
+import java.util.Set;
+
 public class BookDto {
 
     private String guid;
     private String title;
     private String authorFirstName;
     private String authorLastName;
+    private String genre;
 
     public String getGuid() {
         return guid;

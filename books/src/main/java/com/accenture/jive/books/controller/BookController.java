@@ -47,14 +47,20 @@ public class BookController {
         return ResponseEntity.ok(booksDto);
     }
 
+//    @GetMapping("/books/{bookGuid}")
+//    public ResponseEntity<BookDto> readOneBook(@PathVariable("bookGuid") String guid) {
+//        Optional<Book> book = bookRepository.findByGuid(guid);
+//        if (book.isPresent()) {
+//            BookDto bookDto = bookMapper.bookToDto(book.get());
+//            return ResponseEntity.ok(bookDto);
+//        }
+//        return ResponseEntity.notFound().build();
+//    }
+
     @GetMapping("/books/{bookGuid}")
-    public ResponseEntity<BookDto> readOneBook(@PathVariable("bookGuid") String guid) {
+    public Book readOneBookWithGenre(@PathVariable("bookGuid") String guid) {
         Optional<Book> book = bookRepository.findByGuid(guid);
-        if (book.isPresent()) {
-            BookDto bookDto = bookMapper.bookToDto(book.get());
-            return ResponseEntity.ok(bookDto);
-        }
-        return ResponseEntity.notFound().build();
+        return book.orElse(null);
     }
 
     @DeleteMapping ("/books")

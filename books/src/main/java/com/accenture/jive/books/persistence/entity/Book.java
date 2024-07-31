@@ -26,6 +26,13 @@ public class Book {
     )
     private Set<Genre> genres;
 
+    public Set<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
+    }
 
     public Long getId() {
         return id;
