@@ -5,6 +5,7 @@ import com.accenture.jive.books.controller.dto.BookDto;
 import com.accenture.jive.books.controller.dto.BookDtoRequestBody;
 import com.accenture.jive.books.persistence.entity.Book;
 import com.accenture.jive.books.persistence.repository.BookRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 public class BookControllerTest {
@@ -57,7 +59,7 @@ public class BookControllerTest {
         List<BookDto> responseBody = response.getBody();
 
         if (responseBody != null) {
-            Assertions.assertEquals(0, responseBody.size());
+            Assertions.assertEquals(12, responseBody.size());
         }
 
         BookDtoRequestBody bookDto = createBookDtoRequestBody();
@@ -70,7 +72,7 @@ public class BookControllerTest {
         responseBody = response.getBody();
 
         Assertions.assertNotNull(responseBody);
-        Assertions.assertEquals(1, responseBody.size());
+        Assertions.assertEquals(13, responseBody.size());
     }
 
     @Test
@@ -87,7 +89,7 @@ public class BookControllerTest {
         BookDto responseBody = response.getBody();
 
         Assertions.assertNotNull(responseBody);
-        Assertions.assertEquals("Hallo", responseBody.getTitle());
+        Assertions.assertEquals("Hallöchen", responseBody.getTitle());
         Assertions.assertEquals("Alina", responseBody.getAuthorFirstName());
         Assertions.assertEquals("Grünaug", responseBody.getAuthorLastName());
 
@@ -96,7 +98,7 @@ public class BookControllerTest {
 
     private BookDtoRequestBody createBookDtoRequestBody() {
         BookDtoRequestBody book = new BookDtoRequestBody();
-        book.setTitle("Hallo");
+        book.setTitle("Hallöchen");
         book.setAuthorFirstName("Alina");
         book.setAuthorLastName("Grünaug");
         return book;
